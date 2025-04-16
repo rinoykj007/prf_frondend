@@ -23,7 +23,7 @@ export default function BlogAdmin() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/blogs")
+      .get(`${import.meta.env.VITE_API_URL}/api/blogs`)
       .then((response) => setBlogs(response.data))
       .catch((error) => console.error("Error fetching blogs:", error))
       .finally(() => setLoading(false));
@@ -40,14 +40,14 @@ export default function BlogAdmin() {
     };
 
     const apiCall = editingBlog?._id
-      ? axios.put(`http://localhost:3000/api/blogs/${editingBlog._id}`, blogData)
-      : axios.post("http://localhost:3000/api/blogs", newBlog);
+      ? axios.put(`${import.meta.env.VITE_API_URL}/api/blogs/${editingBlog._id}`, blogData)
+      : axios.post(`${import.meta.env.VITE_API_URL}/api/blogs`, newBlog);
 
     apiCall
       .then(() => {
         setNewBlog(initialBlog);
         setEditingBlog(null);
-        return axios.get("http://localhost:3000/api/blogs");
+        return axios.get(`${import.meta.env.VITE_API_URL}/api/blogs`);
       })
       .then((response) => setBlogs(response.data))
       .catch((error) => {
@@ -68,10 +68,10 @@ export default function BlogAdmin() {
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this blog post?")) {
       axios
-        .delete(`http://localhost:3000/api/blogs/${id}`)
+        .delete(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`)
         .then(() => {
           alert("Blog deleted successfully!");
-          return axios.get("http://localhost:3000/api/blogs");
+          return axios.get(`${import.meta.env.VITE_API_URL}/api/blogs`);
         })
         .then((response) => setBlogs(response.data))
         .catch((error) => alert("Error deleting blog: " + error.message));
