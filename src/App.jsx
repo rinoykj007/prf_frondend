@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import Blog from "./pages/Blog";
 import BlogAdmin from "./pages/admin/BlogAdmin";
 import Footer from "./components/Footer";
-import Courses from "./pages/courses";
+import Courses from "./pages/Courses";
 import Expert_Counseling from "./pages/Services/Expert_Counseling";
 import CourseSelection from "./pages/Services/CourseSelection";
 import BankLoan from "./pages/Services/Bank_Loan";
