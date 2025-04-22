@@ -6,8 +6,7 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview",
-    "start": "node server.js"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@babel/runtime": "^7.27.0",

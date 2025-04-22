@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import { api } from "../../lib/api";
 import BlogForm from "../../components/BlogForm";
 
 export default function BlogAdmin() {
@@ -22,8 +22,8 @@ export default function BlogAdmin() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/api/blogs`)
+    api
+      .get("/blogs")
       .then((response) => setBlogs(response.data))
       .catch((error) => console.error("Error fetching blogs:", error))
       .finally(() => setLoading(false));
@@ -31,28 +31,30 @@ export default function BlogAdmin() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Only include allowed fields for update
     const blogData = {
       title: newBlog.title,
       content: newBlog.content,
-      author: newBlog.author
+      author: newBlog.author,
     };
 
     const apiCall = editingBlog?._id
-      ? axios.put(`${import.meta.env.VITE_API_URL}/api/blogs/${editingBlog._id}`, blogData)
-      : axios.post(`${import.meta.env.VITE_API_URL}/api/blogs`, newBlog);
+      ? api.put(`/blogs/${editingBlog._id}`, blogData)
+      : api.post("/blogs", newBlog);
 
     apiCall
       .then(() => {
         setNewBlog(initialBlog);
         setEditingBlog(null);
-        return axios.get(`${import.meta.env.VITE_API_URL}/api/blogs`);
+        return api.get("/blogs");
       })
       .then((response) => setBlogs(response.data))
       .catch((error) => {
         console.error("Error saving blog:", error);
-        alert("Error saving blog: " + error.response?.data?.error || error.message);
+        alert(
+          "Error saving blog: " + error.response?.data?.error || error.message
+        );
       });
   };
 
@@ -67,11 +69,11 @@ export default function BlogAdmin() {
 
   const handleDelete = (id) => {
     if (window.confirm("Are you sure you want to delete this blog post?")) {
-      axios
-        .delete(`${import.meta.env.VITE_API_URL}/api/blogs/${id}`)
+      api
+        .delete(`/blogs/${id}`)
         .then(() => {
           alert("Blog deleted successfully!");
-          return axios.get(`${import.meta.env.VITE_API_URL}/api/blogs`);
+          return api.get("/blogs");
         })
         .then((response) => setBlogs(response.data))
         .catch((error) => alert("Error deleting blog: " + error.message));
